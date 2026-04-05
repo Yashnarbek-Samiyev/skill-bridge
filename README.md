@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TechWork Platform 🚀
 
-## Getting Started
+**TechWork** — Texnikum talabalarini real buyurtmachilar bilan bog'laydigan, ularga amaliyot o'tash va daromad topish imkonini beruvchi innovatsion markazlashtirilgan platforma.
 
-First, run the development server:
+## 🌟 Asosiy Xususiyatlar
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Ko'p tilli interfeys (i18n):** O'zbek, Rus va Ingliz tillarida to'liq lokalizatsiya.
+- **Enterprise UI/UX:** Zamonaviy, "gradient-free", qora va ko'k ranglar palitrasiga asoslangan professional dizayn.
+- **Rollar boshqaruvi:**
+  - **Mijoz:** Buyurtma berish, jarayonni kuzatish va natijani baholash.
+  - **Rahbar (Mentor):** Buyurtmalarni qabul qilish, talabalarga vazifalar taqsimlash va sifat nazorati.
+  - **Talaba:** Vazifalarni bajarish, natijalarni yuklash va elektron sertifikatlar olish.
+  - **Admin:** Tizim statistikasi, foydalanuvchilar va moliyaviy oqimlarni boshqarish.
+- **Aqlli Yordamchi:** 3 tilda javob bera oladigan Support Bot.
+- **Real-time Bildirishnomalar:** Har bir amal bo'yicha onlayn xabarnomalar tizimi.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Texnologiyalar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** Next.js 15+ (App Router)
+- **Til:** TypeScript
+- **Ma'lumotlar bazasi:** PostgreSQL / SQLite (Prisma ORM orqali)
+- **Dizayn:** Vanilla CSS (Custom UI System)
+- **Sertifikatlash:** Dinamik PDF generatsiya va QR-kodli tekshiruv.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Ishga tushirish
 
-## Learn More
+1. **Klonlash:**
+   ```bash
+   git clone https://github.com/Yashnarbek-Samiyev/texnikum-platform.git
+   cd texnikum-platform
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Kutubxonalarni o'rnatish:**
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Ma'lumotlar bazasini tayyorlash:**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Dasturni ishga tushirish:**
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+## 📈 Tizim Ishlash Jarayoni
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Buyurtma:** Mijoz xizmat turini tanlaydi va to'lovni (simulyatsiya) amalga oshiradi.
+2. **Taqsimot:** Guruh rahbari yangi buyurtmani ko'radi va uni talabalarga kichik vazifalar ko'rinishida bo'lib beradi.
+3. **Ijro:** Talabalar o'z panellarida vazifalarni bajarib, natijani (havola yoki fayl) yuklaydilar.
+4. **Yakunlash:** Rahbar barcha vazifalar bajarilgach, loyihani yopadi.
+5. **Baholash:** Mijoz natijani ko'radi va yulduzchalar bilan baholaydi. Talaba avtomatik ravishda sertifikatga ega bo'ladi.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*© 2026 TechWork Platformasi. Barcha huquqlar himoyalangan.*
