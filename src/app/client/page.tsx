@@ -119,10 +119,10 @@ export default async function ClientPage() {
                       <div style={{ padding: '16px', border: '1px solid var(--border)', borderRadius: '12px', background: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <div style={{ color: '#000' }}>
                           <div style={{ fontSize: '10px', color: '#666', textTransform: 'uppercase', fontWeight: 800 }}>Digital Invoice</div>
-                          <div style={{ fontSize: '13px', fontWeight: 900 }}>Verified by TechWork</div>
+                          <div style={{ fontSize: '13px', fontWeight: 900 }}>Verified by Skill-Bridge</div>
                           <div style={{ fontSize: '11px', color: '#999' }}>ID: {o.id.substring(0,8).toUpperCase()}</div>
                         </div>
-                        <QRCodeSVG value={`https://techwork.edu/verify/${o.id}`} size={48} />
+                        <QRCodeSVG value={`https://skill-bridge.edu/verify/${o.id}`} size={48} />
                       </div>
                     )}
 

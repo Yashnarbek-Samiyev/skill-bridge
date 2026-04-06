@@ -14,9 +14,9 @@ import SupportChat from "./SupportChat";
 import { Dictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "TechWork Platform",
+  title: "Skill-Bridge Platform",
   description:
-    "Texnikum talabalarini real mijozlar bilan bog'laydigan raqamli platforma"
+    "Texnikum talabalarini real mijozlar bilan bog'laydigan zamonaviy ta'lim va mehnat platformasi"
 };
 
 export default async function RootLayout({
@@ -58,23 +58,21 @@ export default async function RootLayout({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="48" height="48" rx="12" fill="var(--accent)" />
-              {/* T harfi */}
-              <rect x="10" y="14" width="14" height="4" rx="1" fill="white" />
-              <rect x="15" y="14" width="4" height="18" rx="1" fill="white" />
-              {/* W harfi */}
-              <polyline
-                points="24,14 27,32 32,20 37,32 40,14"
+              <rect width="48" height="48" rx="14" fill="#3B82F6" />
+              {/* Vertical line for 'B' */}
+              <path d="M16 12V36" stroke="white" strokeWidth="4" strokeLinecap="round" />
+              {/* S-curve that also forms the loops of 'B' */}
+              <path
+                d="M16 12C16 12 34 12 34 18C34 24 16 24 16 24C16 24 34 24 34 30C34 36 16 36 16 36"
                 stroke="white"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                fill="none"
               />
             </svg>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '18px', lineHeight: 1, color: 'var(--invert-heading)', letterSpacing: '-0.3px' }}>
-                Tech<span style={{ color: 'var(--accent)' }}>Work</span>
+                Skill<span style={{ color: 'var(--accent)' }}>Bridge</span>
               </div>
               <div className="logo-tagline" style={{ fontSize: '10px', fontWeight: 500, color: 'var(--t3)', letterSpacing: '0.3px', lineHeight: 1 }}>
                 Talabalar · Mijozlar · Texnikum
@@ -195,7 +193,7 @@ export default async function RootLayout({
               {/* Column 1: About */}
               <div className="footer-col">
                 <div className="logo" style={{ marginBottom: '16px' }}>
-                  Tech<span style={{ color: 'var(--accent)' }}>Work</span>
+                  Skill<span style={{ color: 'var(--accent)' }}>Bridge</span>
                 </div>
                 <p className="footer-text" style={{ marginBottom: '20px' }}>
                   {dict.footerCol1Desc}
@@ -257,7 +255,7 @@ export default async function RootLayout({
                 </form>
                 <div style={{ marginTop: '24px' }}>
                   <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--accent)', marginBottom: '4px' }}>+998 71 200-00-00</div>
-                  <div style={{ fontSize: '13px', color: 'var(--t3)' }}>info@techwork.uz</div>
+                  <div style={{ fontSize: '13px', color: 'var(--t3)' }}>info@skill-bridge.uz</div>
                 </div>
               </div>
 

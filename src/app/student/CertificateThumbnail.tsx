@@ -14,7 +14,7 @@ interface ThumbnailProps {
 }
 
 export default function CertificateThumbnail({ studentName, serviceName, orderId, leaderName, date, dict }: ThumbnailProps) {
-  const verificationUrl = `https://techwork.uz/verify/${orderId}`
+  const verificationUrl = `https://skill-bridge.uz/verify/${orderId}`
 
   return (
     <div style={{ 
@@ -39,9 +39,15 @@ export default function CertificateThumbnail({ studentName, serviceName, orderId
       }}>
         <div className="certificate-container" style={{ margin: 0, borderWidth: '10px' }}>
           <div className="certificate-inner" style={{ padding: '30px' }}>
-             <div className="cert-seal-gold" style={{ bottom: '40px', width: '60px', height: '60px' }}>SEAL</div>
+             <div className="cert-seal-gold" style={{ bottom: '40px', width: '60px', height: '60px', opacity: 0.1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+                  <path d="M16 12V36" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+                  <path d="M16 12C16 12 34 12 34 18C34 24 16 24 16 24C16 24 34 24 34 30C34 36 16 36 16 36" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+             </div>
              
-             <div style={{fontSize: '14px', fontWeight: 'bold', letterSpacing: '2px', color: 'var(--accent)', textAlign: 'center'}}>TECHWORK</div>
+             <div style={{fontSize: '14px', fontWeight: 'bold', letterSpacing: '2px', color: 'var(--accent)', textAlign: 'center'}}>SKILL-BRIDGE</div>
              <div style={{fontSize: '24px', fontWeight: '900', color: 'var(--accent)', textAlign: 'center', marginBottom: '10px'}}>{dict.student.certificateTitle}</div>
              
              <p style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginBottom: '10px' }}>{dict.student.certificateBody}</p>

@@ -2,6 +2,8 @@
 
 import prisma from './prisma'
 import { revalidatePath } from 'next/cache'
+import { createSession } from './session'
+import { redirect } from 'next/navigation'
 
 // -- SEED DATA IF EMPTY --
 export async function seedInitialData() {
@@ -277,9 +279,77 @@ export async function createReview(orderId: string, rating: number, comment: str
   return review
 }
 export async function createUser(data: { name: string, username: string, password: string, role: string, phone?: string, groupId?: string }) {
-  const user = await prisma.user.create({ data })
-  revalidatePath('/admin')
-  return user
+  // Check for duplicate username
+  const existingUsername = await prisma.user.findUnique({ where: { username: data.username } })
+  if (existingUsername) {
+    return { error: 'usernameTaken' }
+  }
+
+  // Check for duplicate phone if provided
+  if (data.phone) {
+    const existingPhone = await prisma.user.findFirst({ where: { phone: data.phone } })
+    if (existingPhone) {
+      return { error: 'userExists' }
+    }
+  }
+
+  try {
+    const user = await prisma.user.create({ data })
+    revalidatePath('/admin')
+    return { success: true, user }
+  } catch (e) {
+    return { error: 'generic' }
+  }
+}
+
+export async function handleRegisterAction(prevState: any, formData: FormData) {
+  const name = (formData.get('name') as string)?.trim()
+  const username = (formData.get('username') as string)?.trim()
+  const phone = (formData.get('phone') as string)?.trim()
+  const password = formData.get('password') as string
+  const confirm = formData.get('confirm') as string
+
+  if (!name || !username || !password || !phone) return { error: 'fillAll' }
+  if (password !== confirm) return { error: 'passwordMatch' }
+  if (password.length < 4) return { error: 'generic' }
+
+  const result = await createUser({
+    name,
+    username,
+    password,
+    phone,
+    role: 'CLIENT',
+  })
+
+  if (result.error) return { error: result.error }
+  
+  if (result.user) {
+    await createSession(result.user.id, result.user.role)
+    redirect('/client')
+  }
+  return { error: 'generic' }
+}
+
+export async function handleLoginAction(prevState: any, formData: FormData) {
+  const username = (formData.get('username') as string)?.trim()
+  const password = formData.get('password') as string
+  
+  if (!username || !password) return { error: 'fillAll' }
+
+  const user = await prisma.user.findUnique({ where: { username } })
+  if (user && user.password === password) {
+    await createSession(user.id, user.role)
+    
+    let path = '/'
+    if (user.role === 'ADMIN') path = '/admin'
+    else if (user.role === 'LEADER') path = '/leader'
+    else if (user.role === 'STUDENT') path = '/student'
+    else if (user.role === 'CLIENT') path = '/client'
+    
+    redirect(path)
+  }
+
+  return { error: 'invalidCredentials' }
 }
 
 export async function createGroup(data: { name: string, directionId: string, region: string, leaderId?: string }) {

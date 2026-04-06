@@ -13,9 +13,9 @@ const FAQ_RESPONSES: { keywords: string[]; answer: Record<string, string> }[] = 
   {
     keywords: ['salom', 'hello', 'привет', 'hi', 'hey', 'assalom'],
     answer: {
-      uz: "Salom! 👋 Men TechWork yordamchi botiman. Qanday yordam bera olaman?",
-      ru: "Привет! 👋 Я бот-помощник TechWork. Чем я могу вам помочь?",
-      en: "Hello! 👋 I'm the TechWork assistant bot. How can I help you today?"
+      uz: "Salom! 👋 Men Skill-Bridge yordamchi botiman. Qanday yordam bera olaman?",
+      ru: "Привет! 👋 Я бот-помощник Skill-Bridge. Чем я могу вам помочь?",
+      en: "Hello! 👋 I'm the Skill-Bridge assistant bot. How can I help you today?"
     }
   },
   {
@@ -37,9 +37,9 @@ const FAQ_RESPONSES: { keywords: string[]; answer: Record<string, string> }[] = 
   {
     keywords: ['aloqa', 'contact', 'контакт', 'telefon', 'phone', 'email'],
     answer: {
-      uz: "Biz bilan bog'lanish: +998 71 200-00-00 yoki info@techwork.uz",
-      ru: "Свяжитесь с нами: +998 71 200-00-00 или info@techwork.uz",
-      en: "Contact us: +998 71 200-00-00 or info@techwork.uz"
+      uz: "Biz bilan bog'lanish: +998 71 200-00-00 yoki info@skill-bridge.uz",
+      ru: "Свяжитесь с нами: +998 71 200-00-00 или info@skill-bridge.uz",
+      en: "Contact us: +998 71 200-00-00 or info@skill-bridge.uz"
     }
   }
 ]
@@ -60,7 +60,7 @@ export default function SupportChat({ dict }: { dict: any }) {
         {
           id: 0,
           from: 'bot',
-          text: (dict.home.badge || 'Hello') + "! 👋 TechWork Support. " + (dict.home.heroSub || '')
+          text: (dict.home.badge || 'Hello') + "! 👋 Skill-Bridge Support. " + (dict.home.heroSub || '')
         }
       ])
     }
@@ -79,9 +79,9 @@ export default function SupportChat({ dict }: { dict: any }) {
         return faq.answer[lang] || faq.answer['en']
       }
     }
-    return lang === 'ru' ? "Извините, я не понял вопрос. Напишите нам на info@techwork.uz" : 
-           (lang === 'en' ? "Sorry, I didn't understand. Contact us at info@techwork.uz" : 
-           "Kechirasiz, savolingizni tushunmadim. info@techwork.uz ga yozing.")
+    return lang === 'ru' ? "Извините, я не понял вопрос. Напишите нам на info@skill-bridge.uz" : 
+           (lang === 'en' ? "Sorry, I didn't understand. Contact us at info@skill-bridge.uz" : 
+           "Kechirasiz, savolingizni tushunmadim. info@skill-bridge.uz ga yozing.")
   }
 
   function sendMessage(text?: string) {
@@ -150,7 +150,7 @@ export default function SupportChat({ dict }: { dict: any }) {
           <div style={{ padding: '16px 20px', background: 'var(--accent)', color: '#fff', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Bot size={20} />
             <div>
-              <div style={{ fontWeight: '700', fontSize: '15px' }}>TechWork Bot</div>
+              <div style={{ fontWeight: '700', fontSize: '15px' }}>Skill-Bridge Bot</div>
               <div style={{ fontSize: '11px', opacity: 0.85 }}>{dict.home?.badge}</div>
             </div>
             <button onClick={() => setOpen(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>

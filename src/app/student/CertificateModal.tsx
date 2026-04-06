@@ -21,7 +21,7 @@ export default function CertificateModal({ studentName, serviceName, orderId, le
   const [isDownloading, setIsDownloading] = useState(false)
   const certificateRef = useRef<HTMLDivElement>(null)
 
-  const verificationUrl = `https://techwork.uz/verify/${orderId}`
+  const verificationUrl = `https://skill-bridge.uz/verify/${orderId}`
 
   // 🔒 Prevent scroll when modal is open
   useEffect(() => {
@@ -181,13 +181,18 @@ function CertificateContent({ studentName, serviceName, orderId, leaderName, dat
   return (
     <div className="certificate-inner" style={{ padding: '30px 40px' }}>
       {/* Formal Seal Background */}
-      <div className="cert-seal-gold" style={{ bottom: '70px', opacity: 0.1 }}>
-         TECHWORK<br/>OFFICIAL<br/>SEAL
+      <div className="cert-seal-gold" style={{ bottom: '70px', opacity: 0.1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+         <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+           <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+           <path d="M16 12V36" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+           <path d="M16 12C16 12 34 12 34 18C34 24 16 24 16 24C16 24 34 24 34 30C34 36 16 36 16 36" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+         </svg>
+         <div style={{ marginTop: '8px', fontSize: '8px', fontWeight: 'bold' }}>SKILL-BRIDGE OFFICIAL</div>
       </div>
 
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-           <div style={{fontSize: '20px', fontWeight: 'bold', letterSpacing: '4px', color: 'var(--accent)'}}>TECHWORK PLATFORM</div>
+           <div style={{fontSize: '20px', fontWeight: 'bold', letterSpacing: '4px', color: 'var(--accent)'}}>SKILL-BRIDGE PLATFORM</div>
         </div>
         
         <div className="certificate-header" style={{ marginBottom: '5px', fontSize: '36px' }}>LOYIHA SERTIFIKATI</div>
@@ -246,7 +251,7 @@ function CertificateContent({ studentName, serviceName, orderId, leaderName, dat
       </div>
 
       <div style={{ marginTop: '25px', fontSize: '9px', color: '#999', letterSpacing: '0.5px' }}>
-        Ushbu hujjat TechWork Platformasi orqali raqamli imzolangan.
+        Ushbu hujjat Skill-Bridge Platformasi orqali raqamli imzolangan.
       </div>
     </div>
   )

@@ -3,18 +3,24 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const key = new TextEncoder().encode(process.env.SESSION_SECRET || 'techwork-super-secret-key-for-dev')
+const key = new TextEncoder().encode(process.env.SESSION_SECRET || 'skill-bridge-super-secret-key-for-dev')
 
-const cookie = {
-  name: 'techwork_session',
-  duration: 24 * 60 * 60 * 1000, // 24 hours
+export const sessionConfig = {
+  name: 'skill_bridge_session',
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // 1 week
+  }
 }
 
 export async function encrypt(payload: any) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('1day')
+    .setExpirationTime('7days')
     .sign(key)
 }
 
@@ -28,21 +34,27 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function createSession(userId: string, role: string) {
-  const expires = new Date(Date.now() + cookie.duration)
+  const expires = new Date(Date.now() + sessionConfig.cookie.maxAge * 1000)
   const session = await encrypt({ userId, role, expires })
   
   const cookieStore = await cookies()
-  cookieStore.set(cookie.name, session, { expires, httpOnly: true, sameSite: 'lax' })
+  cookieStore.set(sessionConfig.name, session, { 
+    expires, 
+    httpOnly: sessionConfig.cookie.httpOnly, 
+    secure: sessionConfig.cookie.secure,
+    sameSite: sessionConfig.cookie.sameSite,
+    path: sessionConfig.cookie.path
+  })
 }
 
 export async function deleteSession() {
   const cookieStore = await cookies()
-  cookieStore.delete(cookie.name)
+  cookieStore.delete(sessionConfig.name)
 }
 
 export async function getSession() {
   const cookieStore = await cookies()
-  const session = cookieStore.get(cookie.name)?.value
+  const session = cookieStore.get(sessionConfig.name)?.value
   if (!session) return null
   return await decrypt(session)
 }

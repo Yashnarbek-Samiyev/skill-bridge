@@ -67,6 +67,14 @@ export interface Dictionary {
   chat: {
     placeholder: string; send: string; system: string;
   };
+  errors: {
+    usernameTaken: string;
+    userExists: string;
+    invalidCredentials: string;
+    fillAll: string;
+    passwordMatch: string;
+    generic: string;
+  };
 }
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -89,7 +97,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contact: 'Aloqa'
     },
     home: {
-      badge: 'TechWork Rasmiy Platformasi',
+      badge: 'Skill-Bridge Rasmiy Platformasi',
       heroTitle: 'Professional xizmatlar – iqtidorli talabalardan!',
       heroSub: "Turli yo‘nalishlar bo‘yicha buyurtmalarni malakali texnikum talabalariga ishonib topshiring. Ular amaliyot o‘taydilar, siz esa zamonaviy va sifatli xizmatlardan foydalanasiz.",
       statsStudents: 'Faol talabalar',
@@ -102,14 +110,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       step1Title: '1. Buyurtma bering',
       step1Desc: "O‘zingizga kerakli xizmat turini tanlab, loyiha tafsilotlarini qoldiring.",
       step2Title: '2. Talabalar ijrosi',
-      step2Desc: 'Sizning buyurtmangiz ustica tajribali talabalar guruhlari ishlaydi.',
+      step2Desc: 'Sizning buyurtmangiz ustida tajribali talabalar guruhlari ishlaydi.',
       step3Title: '3. Qabul qiling va baholang',
       step3Desc: 'Tayyor mahsulotni qabul qiling va yosh mutaxassislarni baholang!',
-      whyUs: 'Nima uchun TechWork platformasi?',
+      whyUs: 'Nima uchun Skill-Bridge platformasi?',
       why1Title: '💵 Hamyonbob narxlar',
       why1Desc: 'Bozor narxidan sezilarli darajada arzon xizmatlar, chunki biz startap jamoamiz.',
       why2Title: '🛡 Sifat nazorati',
-      why2Desc: "Har bir jarayon malakali o‘qituvchilar va guruh rahbarlari nazorati ostica bo‘ladi.",
+      why2Desc: "Har bir jarayon malakali o‘qituvchilar va guruh rahbarlari nazorati ostida bo‘ladi.",
       why3Title: '🤝 Talabalarni qo‘llab-quvvatlash',
       why3Desc: 'Sizning buyurtmangiz talabalarimizni mehnat bozoriga tayyorlashda katta turtki bo‘ladi.',
       topStudentsTitle: "Oltin Fond: Eng faol talabalar",
@@ -120,7 +128,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       faqTitle: "Ko‘p so‘raladigan savollar",
       faqs: [
         { q: "Platformadan qanday foydalanish mumkin?", a: "Siz avval tizimga mijoz sifatida ro‘yxatdan o‘tasiz, so‘ngra xizmat tanlab loyiha tafsilotlarini kiritasiz." },
-        { q: "Xizmatlar to‘lovi qanday shakllanadi?", a: "Buyurtmalar talabalar amaliyoti doirascica bajarilganligi bois, narxlar hamyonbob qilib belgilangan." },
+        { q: "Xizmatlar to‘lovi qanday shakllanadi?", a: "Buyurtmalar talabalar amaliyoti doirasida bajarilganligi bois, narxlar hamyonbob qilib belgilangan." },
         { q: "Sifat kafolatlanganmi?", a: "Har bir operatsiya maxsus fan o‘qituvchilari va guruh rahbarlari tomonidan qat’iy nazorat qilinadi." },
         { q: "Talabalarga qanday foydasi bor?", a: "Tizim talabalarga amaliy tajriba, ishonch va elektron sertifikatlar taqdim etib, portfel yig‘ishga yordam beradi." }
       ],
@@ -129,7 +137,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       phoneLabel: "Ishonch telefoni",
       emailLabel: "Elektron pochta",
     },
-    footerCopy1: "© 2026 TechWork Platformasi.",
+    footerCopy1: "© 2026 Skill-Bridge Platformasi.",
     footerCopy2: "Barcha huquqlar himoyalangan. Tizim amaliy loyiha asosida yaratilgan.",
     footerCol1Title: "Platforma haqida",
     footerCol1Desc: "Texnikum talabalari va mijozlarni birlashtiruvchi zamonaviy xizmatlar markazi.",
@@ -141,7 +149,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     newsletterBtn: "Obuna bo‘lish",
     login: {
       title: 'Tizimga kirish',
-      sub: "Oshingizga mos keladigan paneldan foydalaning",
+      sub: "Rolingizga mos keladigan paneldan foydalaning",
       username: 'Foydalanuvchi nomi',
       password: 'Parol',
       btn: 'Kirish',
@@ -231,6 +239,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       placeholder: 'Xabaringizni yozing...',
       send: 'Yuborish',
       system: 'Tizim xabari'
+    },
+    errors: {
+      usernameTaken: 'Ushbu foydalanuvchi nomi band.',
+      userExists: 'Bunday ma’lumotlarga ega foydalanuvchi tizimda allaqachon mavjud.',
+      invalidCredentials: 'Foydalanuvchi nomi yoki parol xato.',
+      fillAll: 'Iltimos, barcha maydonlarni to‘ldiring.',
+      passwordMatch: 'Parollar o‘zaro mos kelmadi.',
+      generic: 'Xatolik yuz berdi. Qaytadan urinib ko‘ring.'
     }
   },
   ru: {
@@ -252,7 +268,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contact: 'Контакты'
     },
     home: {
-      badge: 'Официальная Платформа TechWork',
+      badge: 'Официальная Платформа Skill-Bridge',
       heroTitle: 'Профессиональные услуги от талантливых студентов!',
       heroSub: 'Доверяйте выполнение ваших заказов квалифицированным студентам техникумов. Они получают практику, а вы — качественные услуги по доступной цене.',
       statsStudents: 'Активные студенты',
@@ -268,7 +284,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       step2Desc: 'Над вашим заказом работает группа опытных студентов под руководством мастера.',
       step3Title: '3. Приёмка и оценка',
       step3Desc: 'Принимайте готовую работу и выставляйте оценки молодым талантам!',
-      whyUs: 'Почему стоит выбрать TechWork?',
+      whyUs: 'Почему стоит выбрать Skill-Bridge?',
       why1Title: '💵 Выгодные цены',
       why1Desc: 'Стоимость услуг значительно ниже рыночной за счёт учебного процесса.',
       why2Title: '🛡 Контроль качества',
@@ -292,7 +308,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       phoneLabel: 'Горячая линия',
       emailLabel: 'Эл. почта',
     },
-    footerCopy1: "© 2026 Платформа TechWork.",
+    footerCopy1: "© 2026 Платформа Skill-Bridge.",
     footerCopy2: "Все права защищены. Разработано как инновационный образовательный проект.",
     footerCol1Title: "О проекте",
     footerCol1Desc: "Современная площадка для взаимодействия студентов и заказчиков.",
@@ -394,6 +410,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       placeholder: 'Напишите сообщение...',
       send: 'Отправить',
       system: 'Системное сообщение'
+    },
+    errors: {
+      usernameTaken: 'Это имя пользователя уже занято.',
+      userExists: 'Пользователь с такими данными уже существует в системе.',
+      invalidCredentials: 'Неверное имя пользователя или пароль.',
+      fillAll: 'Пожалуйста, заполните все поля.',
+      passwordMatch: 'Пароли не совпадают.',
+      generic: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.'
     }
   },
   en: {
@@ -415,7 +439,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       contact: 'Contact'
     },
     home: {
-      badge: 'Official TechWork Platform',
+      badge: 'Official Skill-Bridge Platform',
       heroTitle: 'Professional Services Delivered by Talented Students!',
       heroSub: 'Delegate your projects to skilled vocational students. They gain vital hands-on experience, and you get high-quality services at competitive prices.',
       statsStudents: 'Active students',
@@ -431,7 +455,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       step2Desc: 'Your request is handled by mentored student squads in a controlled environment.',
       step3Title: '3. Delivery & Review',
       step3Desc: 'Receive the final results and provide feedback to our blooming experts!',
-      whyUs: 'Why TechWork?',
+      whyUs: 'Why Skill-Bridge?',
       why1Title: '💵 Cost Efficiency',
       why1Desc: 'Get professional results at a fraction of market prices through our educational hub.',
       why2Title: '🛡 Quality Control',
@@ -455,7 +479,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       phoneLabel: 'Direct Line',
       emailLabel: 'Email Inquiries',
     },
-    footerCopy1: "© 2026 TechWork Platform.",
+    footerCopy1: "© 2026 Skill-Bridge Platform.",
     footerCopy2: "All rights reserved. Innovative vocational thesis project.",
     footerCol1Title: "Our Mission",
     footerCol1Desc: "Building a bridge between talent-driven students and market demand.",
@@ -557,6 +581,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       placeholder: 'Type your message...',
       send: 'Send',
       system: 'System Message'
+    },
+    errors: {
+      usernameTaken: 'This username is already taken.',
+      userExists: 'A user with this information already exists in the system.',
+      invalidCredentials: 'Invalid username or password.',
+      fillAll: 'Please fill in all required fields.',
+      passwordMatch: 'Passwords do not match.',
+      generic: 'An error occurred. Please try again.'
     }
   }
 }

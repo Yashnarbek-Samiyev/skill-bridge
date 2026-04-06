@@ -4,21 +4,33 @@ import { useState } from 'react'
 import { createUser } from '@/lib/actions'
 import { UserPlus, Shield, User, Trash2, Search } from 'lucide-react'
 
-export default function AdminUsers({ users, groups }: { users: any[], groups: any[] }) {
+export default function AdminUsers({ users, groups, dict }: { users: any[], groups: any[], dict: any }) {
   const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   async function handleAddUser(formData: FormData) {
     setLoading(true)
+    setError(null)
+    setSuccess(false)
+    
     const name = formData.get('name') as string
     const username = formData.get('username') as string
     const password = formData.get('password') as string
     const role = formData.get('role') as string
     const groupId = formData.get('groupId') as string
+    const phone = formData.get('phone') as string
 
-    await createUser({ name, username, password, role, groupId: groupId || undefined })
+    const res = await createUser({ name, username, password, role, phone, groupId: groupId || undefined })
+    
+    if (res.error) {
+      setError(dict.errors[res.error] || dict.errors.generic)
+    } else {
+      setSuccess(true)
+      // Clear form logic could go here if managed by state
+    }
     setLoading(false)
-    // Clear form or show success if needed
   }
 
   const filteredUsers = users.filter(u => 
@@ -38,6 +50,16 @@ export default function AdminUsers({ users, groups }: { users: any[], groups: an
           </div>
           
           <form action={handleAddUser} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {error && (
+              <div style={{ padding: '10px', background: 'rgba(239, 68, 68, 0.1)', color: 'var(--err)', borderRadius: '8px', fontSize: '13px', fontWeight: 600, border: '1px solid var(--err)' }}>
+                ⚠️ {error}
+              </div>
+            )}
+            {success && (
+              <div style={{ padding: '10px', background: 'rgba(34, 197, 94, 0.1)', color: 'var(--ok)', borderRadius: '8px', fontSize: '13px', fontWeight: 600, border: '1px solid var(--ok)' }}>
+                ✅ Foydalanuvchi muvaffaqiyatli yaratildi!
+              </div>
+            )}
             <div className="form-group">
               <label className="form-label">To'liq ism (F.I.SH)</label>
               <input type="text" name="name" className="form-input" placeholder="Aziz Karimov" required />
@@ -46,6 +68,11 @@ export default function AdminUsers({ users, groups }: { users: any[], groups: an
             <div className="form-group">
               <label className="form-label">Talaba ID / Username</label>
               <input type="text" name="username" className="form-input" placeholder="ID12345" required />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Telefon raqami</label>
+              <input type="tel" name="phone" className="form-input" placeholder="+998..." />
             </div>
 
             <div className="form-group">

@@ -164,7 +164,7 @@ export default function AdminClient({ stats, latestOrders, groups, users, direct
         </div>
       )}
 
-      {activeTab === 'users' && <AdminUsers users={users} groups={groups} />}
+      {activeTab === 'users' && <AdminUsers users={users} groups={groups} dict={dict} />}
       {activeTab === 'groups' && <AdminGroups groups={groups} directions={directions} users={users} />}
       {activeTab === 'services' && <AdminServices directions={directions} />}
 
