@@ -1,9 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    root: __dirname,
+  // Images from external sources
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
+  // Server actions config
+  serverExternalPackages: ['@prisma/client', 'prisma'],
 };
 
 export default nextConfig;
