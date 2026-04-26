@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     } else if (text.startsWith('/help')) {
       reply = `ℹ️ <b>Yordam</b>\n\n` +
         `Bu bot Skill-Bridge platformasida buyurtmalar, vazifalar va boshqa yangiliklar haqida bildirishnomalar yuboradi.\n\n` +
-        `🌐 Platform: <a href="https://texnikum-platform.vercel.app">skill-bridge.uz</a>`
+        `🌐 Platform: <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://skill-bridge-ld43e14n0-yashnarbek-samiyevs-projects.vercel.app'}">Skill-Bridge</a>`
     } else if (text.startsWith('/status')) {
       reply = `📊 <b>Platform ishlayapti ✅</b>\n\n` +
         `⏰ Vaqt: ${new Date().toLocaleString('uz-UZ')}`

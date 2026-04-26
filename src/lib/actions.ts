@@ -5,6 +5,8 @@ import { revalidatePath } from 'next/cache'
 import { createSession } from './session'
 import { redirect } from 'next/navigation'
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://skill-bridge-ld43e14n0-yashnarbek-samiyevs-projects.vercel.app'
+
 // -- SEED DATA IF EMPTY --
 export async function seedInitialData() {
   const dirCount = await prisma.direction.count()
@@ -118,7 +120,7 @@ export async function createOrder(data: {
     `📍 Hudud: ${data.region}\n` +
     `💰 Narx: ${data.price.toLocaleString()} so'm\n` +
     `👥 Guruh: ${group?.id ? 'Tayinlandi' : 'Tayinlanmadi'}\n\n` +
-    `🌐 <a href="https://texnikum-platform.vercel.app/admin">Admin panelga o'tish</a>`
+    `🌐 <a href="${APP_URL}/admin">Admin panelga o'tish</a>`
   )
 
   revalidatePath('/client')
