@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const ADMIN_CHAT_ID = process.env.TELEGRAM_ADMIN_CHAT_ID
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://skill-bridge-ld43e14n0-yashnarbek-samiyevs-projects.vercel.app'
 
 export async function sendTelegramMessage(chatId: string | number, text: string) {
   if (!BOT_TOKEN) return false
@@ -12,7 +13,8 @@ export async function sendTelegramMessage(chatId: string | number, text: string)
       body: JSON.stringify({
         chat_id: chatId,
         text,
-        parse_mode: 'HTML'
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
       }),
     })
     return res.ok
@@ -45,20 +47,43 @@ export async function POST(req: NextRequest) {
 
     if (text.startsWith('/start')) {
       reply = `🎓 <b>Skill-Bridge Bot ga xush kelibsiz!</b>\n\n` +
-        `Salom, ${firstName}! Bu bot Skill-Bridge platformasi bildirishnomalari uchun.\n\n` +
-        `📋 <b>Mavjud buyruqlar:</b>\n` +
-        `/start — Botni ishga tushirish\n` +
-        `/help — Yordam\n` +
-        `/status — Platforma statistikasi`
+        `Salom, ${firstName}! Ushbu bot orqali Skill-Bridge platformasini boshqarish va bildirishnomalarni kuzatish mumkin.\n\n` +
+        `📋 <b>Asosiy komandalar:</b>\n` +
+        `📊 /stats — Platforma statistikasi\n` +
+        `🔗 /links — Foydali havolalar\n` +
+        `ℹ️ /about — Loyiha haqida\n` +
+        `❓ /help — Yordam`
+    } else if (text.startsWith('/stats')) {
+      const userCount = await prisma.user.count()
+      const studentCount = await prisma.user.count({ where: { role: 'STUDENT' } })
+      const orderCount = await prisma.order.count()
+      const completedOrders = await prisma.order.count({ where: { status: 'COMPLETED' } })
+      const groupCount = await prisma.group.count()
+
+      reply = `📊 <b>Platforma Statistikasi:</b>\n\n` +
+        `👥 Jami foydalanuvchilar: <b>${userCount}</b>\n` +
+        `👨‍🎓 Talabalar: <b>${studentCount}</b>\n` +
+        `📦 Jami buyurtmalar: <b>${orderCount}</b>\n` +
+        `✅ Tugallangan ishlar: <b>${completedOrders}</b>\n` +
+        `🏢 Guruhlar soni: <b>${groupCount}</b>\n\n` +
+        `⏰ Yangilangan vaqt: ${new Date().toLocaleTimeString('uz-UZ')}`
+    } else if (text.startsWith('/links')) {
+      reply = `🔗 <b>Foydali Havolalar:</b>\n\n` +
+        `🌐 <a href="${APP_URL}">Asosiy sahifa</a>\n` +
+        `🏆 <a href="${APP_URL}/leaderboard">Leaderboard (Reyting)</a>\n` +
+        `🔑 <a href="${APP_URL}/login">Tizimga kirish</a>\n` +
+        `📝 <a href="${APP_URL}/register">Ro'yxatdan o'tish</a>`
+    } else if (text.startsWith('/about')) {
+      reply = `ℹ️ <b>Loyiha haqida:</b>\n\n` +
+        `<b>Skill-Bridge</b> — bu texnikum talabalarini real buyurtmalar bilan bog'laydigan innovatsion platforma.\n\n` +
+        `🎯 <b>Maqsad:</b> Talabalarga amaliy tajriba va daromad topish imkoniyatini yaratish.\n\n` +
+        `💻 Texnologiyalar: Next.js, PostgreSQL, Prisma, Vercel.`
     } else if (text.startsWith('/help')) {
-      reply = `ℹ️ <b>Yordam</b>\n\n` +
-        `Bu bot Skill-Bridge platformasida buyurtmalar, vazifalar va boshqa yangiliklar haqida bildirishnomalar yuboradi.\n\n` +
-        `🌐 Platform: <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://skill-bridge-ld43e14n0-yashnarbek-samiyevs-projects.vercel.app'}">Skill-Bridge</a>`
-    } else if (text.startsWith('/status')) {
-      reply = `📊 <b>Platform ishlayapti ✅</b>\n\n` +
-        `⏰ Vaqt: ${new Date().toLocaleString('uz-UZ')}`
+      reply = `❓ <b>Yordam bo'limi:</b>\n\n` +
+        `Bot ishlamayotgan bo'lsa yoki savollaringiz bo'lsa, @yashnarsamiyev bilan bog'laning.\n\n` +
+        `Barcha komandalar: /start, /stats, /links, /about`
     } else {
-      reply = `Noma'lum buyruq. /help yozing`
+      reply = `Noma'lum buyruq. /help yozing.`
     }
 
     if (reply) {
