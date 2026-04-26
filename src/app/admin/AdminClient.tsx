@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { LayoutDashboard, Users, UserPlus, Tag, CreditCard } from 'lucide-react'
+import { LayoutDashboard, Users, UserPlus, Tag, CreditCard, Download } from 'lucide-react'
 import AdminUsers from './AdminUsers'
 import AdminGroups from './AdminGroups'
 import AdminServices from './AdminServices'
@@ -116,7 +116,37 @@ export default function AdminClient({ stats, latestOrders, groups, users, direct
             </div>
           </div>
 
-          <Charts data={latestOrders} />
+          <Charts data={latestOrders} groups={groups} />
+
+          {/* Export Section */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0 0', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: 'var(--t2)' }}>
+              <Download size={16} />
+              Eksport:
+            </div>
+            {[
+              { type: 'orders', label: 'Buyurtmalar' },
+              { type: 'users', label: 'Foydalanuvchilar' },
+              { type: 'groups', label: 'Guruhlar' },
+            ].map(({ type, label }) => (
+              <a
+                key={type}
+                href={`/api/export?type=${type}`}
+                download
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '8px 16px', borderRadius: '8px',
+                  background: 'var(--surface)', border: '1px solid var(--border)',
+                  color: 'var(--t2)', fontSize: '13px', fontWeight: 600,
+                  textDecoration: 'none', transition: 'all 0.2s'
+                }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = 'var(--accent)')}
+                onMouseOut={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+              >
+                <Download size={13} /> {label} .csv
+              </a>
+            ))}
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '24px', marginTop: '24px' }}>
             <div className="card">

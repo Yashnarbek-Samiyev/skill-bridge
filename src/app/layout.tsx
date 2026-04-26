@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Link from "next/link";
 
@@ -16,7 +16,21 @@ import { Dictionary } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Skill-Bridge Platform",
   description:
-    "Texnikum talabalarini real mijozlar bilan bog'laydigan zamonaviy ta'lim va mehnat platformasi"
+    "Texnikum talabalarini real mijozlar bilan bog'laydigan zamonaviy ta'lim va mehnat platformasi",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Skill-Bridge",
+  },
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#3B82F6",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default async function RootLayout({
@@ -91,8 +105,8 @@ export default async function RootLayout({
             <Link href="/#faq" className="nav-link nav-link-secondary">
               {dict.nav.faq}
             </Link>
-            <Link href="/#help" className="nav-link nav-link-secondary">
-              {dict.nav.help}
+            <Link href="/leaderboard" className="nav-link nav-link-secondary">
+              🏆 Reyting
             </Link>
 
             {!session && (
