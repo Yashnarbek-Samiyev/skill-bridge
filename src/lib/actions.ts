@@ -30,13 +30,29 @@ async function notify(userId: string, message: string, type: string = 'INFO') {
     await prisma.notification.create({ 
       data: { 
         userId, 
-        title: message, // In schema it is 'title', not 'message'
+        title: message,
         type, 
         read: false 
       } 
     })
   } catch (e) {
     console.error("Notification Error:", e)
+  }
+}
+
+// Helper: send Telegram message to admin
+async function notifyTelegram(text: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+  const chatId = process.env.TELEGRAM_ADMIN_CHAT_ID
+  if (!token || !chatId) return
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+    })
+  } catch (e) {
+    console.error('Telegram notify error:', e)
   }
 }
 
@@ -93,6 +109,17 @@ export async function createOrder(data: {
       await notify(s.id, `🛠️ Guruhingizga yangi ish keldi: "${order.service.name}"`, 'ORDER')
     }
   }
+
+  // Telegram admin notification
+  await notifyTelegram(
+    `📦 <b>Yangi buyurtma!</b>\n\n` +
+    `👤 Mijoz: ${order.client?.name || '—'}\n` +
+    `🛠 Xizmat: ${order.service.name}\n` +
+    `📍 Hudud: ${data.region}\n` +
+    `💰 Narx: ${data.price.toLocaleString()} so'm\n` +
+    `👥 Guruh: ${group?.id ? 'Tayinlandi' : 'Tayinlanmadi'}\n\n` +
+    `🌐 <a href="https://texnikum-platform.vercel.app/admin">Admin panelga o'tish</a>`
+  )
 
   revalidatePath('/client')
   revalidatePath('/admin')
@@ -324,6 +351,13 @@ export async function handleRegisterAction(prevState: any, formData: FormData) {
   if (result.error) return { error: result.error }
   
   if (result.user) {
+    // Telegram: new user registered
+    await notifyTelegram(
+      `👤 <b>Yangi foydalanuvchi ro'yxatdan o'tdi!</b>\n\n` +
+      `📛 Ism: ${name}\n` +
+      `🔑 Login: @${username}\n` +
+      `📞 Telefon: ${phone}`
+    )
     await createSession(result.user.id, result.user.role)
     redirect('/client')
   }
@@ -399,6 +433,14 @@ export async function completeOrder(orderId: string, fileUrl?: string) {
   if (order.clientId) {
     await notify(order.clientId, `🔔 Ish bajarildi! Iltimos, natijani tekshiring va tasdiqlang.`, 'ORDER')
   }
+
+  // Telegram: order completed
+  await notifyTelegram(
+    `✅ <b>Buyurtma bajarildi!</b>\n\n` +
+    `🆔 ID: ${orderId.substring(0, 8).toUpperCase()}\n` +
+    `💰 Summa: ${order.price.toLocaleString()} so'm\n\n` +
+    `🌐 <a href="https://texnikum-platform.vercel.app/admin">Admin panelga o'tish</a>`
+  )
 
   revalidatePath('/leader')
   revalidatePath('/client')
