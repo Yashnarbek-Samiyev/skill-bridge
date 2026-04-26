@@ -29,7 +29,7 @@ export default function AdminClient({ stats, latestOrders, groups, users, direct
     <div className="container" style={{ padding: '40px 20px' }}>
       
       {/* Tab Navigation */}
-      <div style={{ 
+      <div className="admin-tabs-container" style={{ 
         display: 'flex', 
         gap: '8px', 
         marginBottom: '32px', 
@@ -58,7 +58,7 @@ export default function AdminClient({ stats, latestOrders, groups, users, direct
             }}
           >
             {tab.icon}
-            {tab.label}
+            <span className="admin-tab-label">{tab.label}</span>
           </button>
         ))}
       </div>
