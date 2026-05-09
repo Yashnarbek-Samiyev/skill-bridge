@@ -122,6 +122,19 @@ export default async function LeaderPage({
               <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--ok)' }}>
                 {formatUZS(totalBalance)}
               </div>
+              {totalBalance > 0 && (
+                <form action={async () => {
+                  'use server'
+                  const { requestWithdrawal } = await import('@/lib/actions')
+                  for (const g of groupsToManage) {
+                    if (g.balance > 0) await requestWithdrawal(g.id)
+                  }
+                }}>
+                  <button type="submit" style={{ marginTop: '8px', background: 'var(--ok)', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    💸 Yechishni so'rash
+                  </button>
+                </form>
+              )}
             </div>
 
             <div style={{ padding: '16px 24px', background: 'rgba(59,130,246,0.05)', border: '1px solid rgba(59,130,246,0.1)', borderRadius: '16px', textAlign: 'center' }}>

@@ -105,6 +105,19 @@ export default async function ClientPage() {
                       <div style={{ padding: '16px', background: 'rgba(59,130,246,0.03)', borderRadius: '12px', border: '1px dashed var(--accent)', marginBottom: '16px' }}>
                          <div style={{ fontWeight: 800, fontSize: '14px', marginBottom: '8px' }}>{dict.client.rate}</div>
                          <ReviewForm orderId={o.id} dict={dict.client} />
+                         
+                         <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(59,130,246,0.1)' }}>
+                            <div style={{ fontSize: '12px', color: 'var(--t3)', marginBottom: '8px' }}>Natijadan qoniqmadingizmi?</div>
+                            <form action={async () => {
+                              'use server'
+                              const { requestRevision } = await import('@/lib/actions')
+                              await requestRevision(o.id)
+                            }}>
+                              <button type="submit" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '13px', background: 'var(--err)', borderRadius: '8px' }}>
+                                ⚠️ Qayta ishlashga qaytarish
+                              </button>
+                            </form>
+                         </div>
                       </div>
                     )}
                     {o.review && (

@@ -456,12 +456,49 @@ export async function completeOrder(orderId: string, fileUrl?: string) {
   revalidatePath('/admin')
 }
 
+export async function requestRevision(orderId: string) {
+  const order = await prisma.order.update({
+    where: { id: orderId },
+    data: { status: 'IN_PROGRESS' },
+    include: { group: true, client: true, tasks: true }
+  })
+  
+  if (order.group?.leaderId) {
+    await notify(order.group.leaderId, `⚠️ Mijoz qayta ishlashni so'radi! Loyiha: "${order.serviceId}" (ID: ${order.id.slice(-6)})`, 'ORDER')
+  }
+  
+  for(const t of order.tasks) {
+     if(t.assignedToId) {
+        await notify(t.assignedToId, `⚠️ Mijoz natijadan qoniqmadi, loyihani qayta ishlash kerak.`, 'ORDER')
+     }
+  }
+
+  revalidatePath('/client')
+  revalidatePath('/leader')
+  revalidatePath('/student')
+}
+
 export async function withdrawFunds(groupId: string) {
   await prisma.group.update({
     where: { id: groupId },
     data: { balance: 0 }
   })
   revalidatePath('/admin')
+  revalidatePath('/leader')
+}
+
+export async function requestWithdrawal(groupId: string) {
+  const group = await prisma.group.findUnique({ where: { id: groupId }, include: { leader: true } })
+  if (!group || group.balance === 0) return
+  
+  const admins = await prisma.user.findMany({ where: { role: 'ADMIN' } })
+  
+  for (const admin of admins) {
+    await notify(admin.id, `💰 ${group.name} rahbari (${group.leader?.name || ''}) ${group.balance.toLocaleString()} so'm yechishni so'radi.`, 'INFO')
+  }
+  
+  await notifyTelegram(`💰 <b>To'lov so'rovi!</b>\n\nGuruh: ${group.name}\nRahbar: ${group.leader?.name || ''}\nSumma: ${group.balance.toLocaleString()} so'm`)
+  
   revalidatePath('/leader')
 }
 
@@ -479,7 +516,28 @@ export async function updateTaskResult(taskId: string, result: string) {
   if (task.order.group?.leaderId) {
     await notify(task.order.group.leaderId, `✅ ${task.assignedTo?.name || 'Talaba'} vazifani yakunladi: "${task.title}"`, 'INFO')
   }
+  
+  // Notify Client that task is done
+  if (task.order.clientId) {
+    await notify(task.order.clientId, `👨‍🎓 Loyihangiz ustida ishlayotgan talaba o'z qismini yakunladi: "${task.title}"`, 'INFO')
+  }
 
+  revalidatePath('/student')
+  revalidatePath('/leader')
+  revalidatePath('/client')
+}
+
+export async function startTask(taskId: string) {
+  const task = await prisma.task.update({
+    where: { id: taskId },
+    data: { status: 'IN_PROGRESS' },
+    include: { assignedTo: true, order: { include: { group: true } } }
+  })
+  
+  if (task.order.group?.leaderId) {
+    await notify(task.order.group.leaderId, `▶️ ${task.assignedTo?.name || 'Talaba'} vazifani bajarishga kirishdi: "${task.title}"`, 'INFO')
+  }
+  
   revalidatePath('/student')
   revalidatePath('/leader')
 }

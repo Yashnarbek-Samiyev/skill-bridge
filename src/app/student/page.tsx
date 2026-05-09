@@ -55,6 +55,14 @@ export default async function StudentPage({
     await updateTaskResult(taskId, result)
   }
 
+  async function handleStartTask(formData: FormData) {
+    'use server'
+    const taskId = formData.get('taskId') as string
+    
+    const { startTask } = await import('@/lib/actions')
+    await startTask(taskId)
+  }
+
   return (
     <div className="container" style={{ padding: '40px 20px' }}>
       
@@ -143,6 +151,7 @@ export default async function StudentPage({
         ) : (
           tasks.length > 0 ? tasks.map((t: any) => {
             const isDone = t.status === 'DONE';
+            const isTodo = t.status === 'TODO';
             const orderIsCompleted = t.order.status === 'COMPLETED';
 
             return (
@@ -204,6 +213,16 @@ export default async function StudentPage({
                       <div style={{ background: 'rgba(16,185,129,0.05)', padding: '20px', borderRadius: '16px', border: '1px solid var(--ok)' }}>
                         <div style={{ fontSize: '11px', color: 'var(--ok)', fontWeight: 'bold', marginBottom: '8px', textTransform: 'uppercase' }}>✓ {dict.student.done}</div>
                         <div style={{ fontSize: '15px', color: 'var(--t2)', fontStyle: 'italic' }}>"{t.result || '...'}"</div>
+                      </div>
+                    ) : isTodo ? (
+                      <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '20px', border: '1px dashed var(--accent)', textAlign: 'center' }}>
+                        <h5 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '700' }}>Yangi Vazifa</h5>
+                        <form action={handleStartTask}>
+                          <input type="hidden" name="taskId" value={t.id} />
+                          <button type="submit" className="btn btn-primary" style={{ padding: '16px', fontSize: '16px', fontWeight: '800', width: '100%', borderRadius: '12px' }}>
+                            ▶️ Ishni Boshlash
+                          </button>
+                        </form>
                       </div>
                     ) : (
                       <div style={{ background: 'var(--surface)', padding: '24px', borderRadius: '20px', border: '1px solid var(--border)' }}>
