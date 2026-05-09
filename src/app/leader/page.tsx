@@ -79,10 +79,8 @@ export default async function LeaderPage({
     
     if(!title || !assignedToId) return
 
-    await (prisma as any).task.create({
-      data: { orderId, title, assignedToId }
-    })
-    revalidatePath('/leader')
+    const { assignTask } = await import('@/lib/actions')
+    await assignTask(orderId, title, assignedToId)
   }
 
   async function handleCompleteOrder(formData: FormData) {

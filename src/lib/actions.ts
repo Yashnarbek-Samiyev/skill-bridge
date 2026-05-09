@@ -155,7 +155,7 @@ export async function handleSendMessage(orderId: string, senderId: string, conte
   // Get order with client info
   const order = await prisma.order.findUnique({
     where: { id: orderId },
-    include: { group: { include: { leader: true } }, client: true }
+    include: { group: { include: { leader: true, students: true } }, client: true }
   })
 
   const msg = await prisma.message.create({
@@ -165,21 +165,28 @@ export async function handleSendMessage(orderId: string, senderId: string, conte
 
   // Determine who to notify
   if (order) {
-    // If sender is the client → notify leader
-    if (senderId === order.clientId && order.group?.leaderId) {
-      await notify(
-        order.group.leaderId,
-        `💬 ${order.client?.name || 'Mijoz'} xabar yubordi: "${content.slice(0, 60)}..."`,
-        'MESSAGE'
-      )
+    const isClient = senderId === order.clientId;
+    const isLeader = senderId === order.group?.leaderId;
+    
+    const senderName = msg.sender.name || 'Foydalanuvchi';
+    const shortContent = content.length > 60 ? content.slice(0, 60) + '...' : content;
+    const notifMsg = `💬 ${senderName}: "${shortContent}"`;
+
+    // Notify Client (if sender is not client)
+    if (!isClient && order.clientId) {
+      await notify(order.clientId, notifMsg, 'MESSAGE')
     }
-    // If sender is the leader or student → notify client
-    if (senderId !== order.clientId && order.clientId) {
-      await notify(
-        order.clientId,
-        `💬 Guruhdan yangi xabar: "${content.slice(0, 60)}..."`,
-        'MESSAGE'
-      )
+    // Notify Leader (if sender is not leader)
+    if (!isLeader && order.group?.leaderId) {
+      await notify(order.group.leaderId, notifMsg, 'MESSAGE')
+    }
+    // Notify Students (if sender is not this specific student)
+    if (order.group?.students) {
+      for (const student of order.group.students) {
+        if (student.id !== senderId && student.role === 'STUDENT') {
+          await notify(student.id, notifMsg, 'MESSAGE')
+        }
+      }
     }
   }
 
@@ -459,15 +466,34 @@ export async function withdrawFunds(groupId: string) {
 }
 
 export async function updateTaskResult(taskId: string, result: string) {
-  await prisma.task.update({
+  const task = await prisma.task.update({
     where: { id: taskId },
     data: { 
       status: 'DONE',
       result: result 
-    }
+    },
+    include: { order: { include: { client: true, group: true } }, assignedTo: true }
   })
+  
+  // Notify Leader that task is done
+  if (task.order.group?.leaderId) {
+    await notify(task.order.group.leaderId, `✅ ${task.assignedTo?.name || 'Talaba'} vazifani yakunladi: "${task.title}"`, 'INFO')
+  }
+
   revalidatePath('/student')
   revalidatePath('/leader')
+}
+
+export async function assignTask(orderId: string, title: string, assignedToId: string) {
+  const task = await prisma.task.create({
+    data: { orderId, title, assignedToId }
+  })
+  
+  await notify(assignedToId, `📋 Yangi vazifa biriktirildi: "${title}"`, 'ORDER')
+  
+  revalidatePath('/leader')
+  revalidatePath('/student')
+  return task
 }
 
 export async function getDirections() {
